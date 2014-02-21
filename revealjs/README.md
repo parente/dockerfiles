@@ -1,0 +1,1 @@
+reveal.js containerized. See http://mindtrove.info/a-reveal.js-docker-base-image-with-onbuild/ for details.
