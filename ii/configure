@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# nobody owns the /irc volume
+chown -R nobody /irc
+
+if [ -n "$IRC_SSL" ]; then
+  # ssl secured by stunnel
+  ( cat <<EOF
+  client = yes
+  foreground = yes
+  [ii]
+  accept = 127.0.0.1:9999
+  connect = ${IRC_HOST}:${IRC_PORT}
+EOF
+  ) > /etc/stunnel/ii.conf
+
+  ln -s "/irc/$IRC_NICKNAME/localhost" /irc/ii
+  supervisorctl start stunnel
+  supervisorctl start ii_stunnel
+else
+  # insecure direct connect
+  ln -s "/irc/$IRC_NICKNAME/$IRC_HOST" /irc/ii
+  supervisorctl start ii
+fi
