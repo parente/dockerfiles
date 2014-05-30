@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# make sure webdav folder perms are right
+chown www-data:root /srv/webdav
+
+# insert webdav apache conf
+if [ -f "webdav.conf" ]; then
+    sed -i /etc/apache2/sites-enabled/default-ssl.conf -e '/CustomLog.*/r webdav.conf'
+    rm webdav.conf
+fi
+
+# generate a new key and cert
+openssl req -new -newkey rsa:1024 -days 365 -nodes -x509 \
+    -subj "/C=XX/ST=XX/L=XX/O=XX/CN=XX" \
+    -keyout /etc/ssl/private/ssl-cert-snakeoil.key \
+    -out /etc/ssl/certs/ssl-cert-snakeoil.pem
+
+# set a password and permissions on the file
+if [ ! -f "/etc/apache2/webdav.password" ]; then
+    htpasswd -cb /etc/apache2/webdav.password webdav $PASSWORD
+    chown root:www-data /etc/apache2/webdav.password
+    chmod 640 /etc/apache2/webdav.password
+fi
+
+# start apache
+supervisorctl start apache
