@@ -2,6 +2,7 @@
 
 # make sure webdav folder perms are right
 chown www-data:root /srv/webdav
+chown www-data /var/lock/apache2
 
 # insert webdav apache conf
 if [ -f "webdav.conf" ]; then
