@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# nobody owns the /irc volume
-chown -R nobody /irc
+# ircit user/group owns the /irc volume
+chown -R ircit:ircit /irc
 
 if [ -n "$IRC_SSL" ]; then
   # ssl secured by stunnel
