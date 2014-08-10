@@ -9,7 +9,7 @@ RUN apt-get -yq install pandoc python supervisor wget python-pip
 RUN apt-get -yq install python-dev
 RUN pip install pip --upgrade
 
-RUN pip install ipython[notebook]==2.0
+RUN pip install ipython[notebook]==2.2
 
 ADD notebook.conf /etc/supervisor/conf.d/notebook.conf
 ADD start.sh /
